@@ -1,0 +1,203 @@
+<!--Nama        : Clara Zita Nabilla
+    NIM         : 24060122130057
+    Nama File   : index.ejs
+    Deskripsi   : Menampilkan halaman HTML di web server
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Menetapkan karakter encoding ke UTF-8 untuk mendukung berbagai bahasa -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Halaman responsif di berbagai perangkat -->
+    <title>Validasi Formulir Web Dengan EJS</title> 
+
+    <!-- Link Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+
+    <style>
+        body {
+            background-color: rgba(60, 206, 123, 0.132);    /* Warna latar belakang dengan transparansi */
+            font-family: sans-serif;                          /* Font utama */
+            display: flex;                                    /* Menggunakan flexbox untuk centering */
+            justify-content: center;                          /* Centering secara horizontal */
+            align-items: center;                              /* Centering secara vertikal */
+            height: 100vh;                                    /* Mengatur tinggi halaman penuh pada viewport */
+            margin: 0;                                        /* Menghilangkan margin default browser */
+        }
+
+        .form-container {
+            max-width: 400px;                                 /* Lebar maksimum kontainer form */
+            padding: 2%;                                      /* Padding dalam kontainer */
+            border: 1px solid #f7f7f7;                      /* Border tipis */
+            background-color: #ffffff;                      /* Warna latar belakang form */
+            border-radius: 10px;                              /* Membulatkan sudut */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);        /* Efek bayangan halus */
+        }
+
+        h1 {
+            text-align: center;                               /* Meratakan teks judul ke tengah */
+            color: #272822;                                 /* Warna teks judul */
+            background-color: rgba(60, 206, 123, 0.353);    /* Warna latar belakang judul */
+            padding: 10px;                                    /* Padding untuk judul */
+            border-radius: 5px;                               /* Membulatkan sudut untuk judul */
+        }
+
+        .input-container {
+            position: relative;                               /* Untuk menempatkan ikon di dalam input */
+            margin-top: 25px;                                 /* Jarak antara input satu sama lain */
+        }
+
+        input, textarea {
+            width: calc(100% - 80px);                         /* Lebar input menyesuaikan ruang untuk ikon */
+            padding: 13px 40px;                               /* Padding dalam input, ruang untuk ikon */
+            font-size: 1rem;                                  /* Ukuran font input */
+            border: 1px solid #ccc;                         /* Border abu-abu */
+            border-radius: 5px;                               /* Membulatkan sudut input */
+            margin-bottom: 11px;                              /* Jarak bawah antara input dan error message */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);       /* Efek bayangan pada input */
+            transition: border-color 0.3s;                    /* Efek transisi warna border */
+        }
+
+        input:focus {
+            border-color: #1abc9c;                          /* Warna border saat input difokuskan */
+            outline: none;                                    /* Menghilangkan outline default browser */
+        }
+
+        .input-icon {
+            position: absolute;                               /* Ikon diinput diatur secara absolut */
+            left: 10px;                                       /* Jarak ikon dari kiri */
+            top: 50%;                                         /* Posisikan ikon di tengah vertikal */
+            transform: translateY(-50%);                      /* Pusatkan ikon secara vertikal */
+            color: #888;                                    /* Warna ikon */
+            font-size: 1.2rem;                                /* Ukuran ikon */
+        }
+
+        .button-container {
+            display: flex;                                    /* Flexbox untuk tombol */
+            justify-content: center;                          /* Meratakan tombol ke tengah */
+            margin-top: 20px;                                 /* Jarak antara tombol dan input */
+        }
+
+        button {
+            width: 48%;                                       /* Lebar tombol */
+            height: 50px;                                     /* Tinggi tombol */
+            border-radius: 5px;                               /* Membulatkan sudut tombol */
+            color: #fff;                                    /* Warna teks pada tombol */
+            background: rgb(15, 98, 76);                    /* Warna latar tombol default */
+            font-size: 1rem;                                  /* Ukuran font pada tombol */
+            cursor: pointer;                                  /* Pointer saat mouse hover di tombol */
+            border: 1px solid rgb(15, 98, 76);              /* Border tombol */
+            transition: background-color 0.3s;                /* Efek transisi warna background */
+            margin: 0 2%;                                     /* Jarak antara tombol submit dan reset */
+        }
+
+        button:hover {
+            background-color: #1abc9c;                      /* Warna saat tombol dihover */
+            border-color: #1abc9c;                          /* Warna border saat tombol dihover */
+        }
+
+        .reset-button {
+            background-color: #f39c12;                      /* Warna tombol reset */
+            border-color: #f39c12;                          /* Warna border tombol reset */
+        }
+
+        .reset-button:hover {
+            background-color: #f2b655;                      /* Warna tombol reset saat dihover */
+            border-color: #f2b655;                          /* Warna border saat tombol reset dihover */
+        }
+
+        .errors {
+            color: red;                                     /* Warna pesan error */
+            font-size: 0.9rem;                                /* Ukuran font pesan error */
+            margin-top: 5px;                                  /* Jarak atas pesan error */
+        }
+
+        .success {
+            color: green;                                   /* Warna pesan sukses */
+            margin-top: 15px;                                 /* Jarak atas pesan sukses */
+        }
+
+        .info {
+            margin-top: 15px;                                 /* Jarak atas kotak info */
+            border: 1px solid #ccc;                         /* Border untuk kotak info */
+            padding: 10px;                                    /* Padding dalam kotak info */
+            background-color: rgba(60, 206, 123, 0.353);    /* Warna latar belakang info */
+            border-radius: 5px;                               /* Membulatkan sudut kotak info */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Kontainer form -->
+    <div class="form-container">
+        <h1>Hello, <%= username || 'Guest' %>!</h1> <!-- Menampilkan nama pengguna atau 'Guest' jika tidak ada nama -->
+
+        <!-- Formulir untuk input pengguna -->
+        <form id="myForm" action="/greet" method="post">
+            <!-- Input untuk nama -->
+            <div class="input-container">
+                <i class="fas fa-user input-icon"></i>              <!-- Ikon pengguna -->
+                <label for="username">Nama</label>                  <!-- Label untuk input nama -->
+                <input type="text" id="username" name="username" placeholder="Nama Anda" value="<%= username %>" required> 
+                <% if (error && error.username) { %>                <!-- Jika ada error pada nama, tampilkan pesan error -->
+                    <p class="errors"><%= error.username %></p>
+                <% } %>
+            </div>
+
+            <!-- Input untuk email -->
+            <div class="input-container">
+                <i class="fas fa-envelope input-icon"></i> 
+                <label for="email">Email</label> 
+                <input type="email" id="email" name="email" placeholder="Alamat email" value="<%= email %>" required> 
+                <% if (error && error.email) { %> 
+                    <p class="errors"><%= error.email %></p>
+                <% } %>
+            </div>
+
+            <!-- Input untuk nomor telepon -->
+            <div class="input-container">
+                <i class="fas fa-phone input-icon"></i> 
+                <label for="phone">Nomor Telepon</label> 
+                <input type="tel" id="phone" name="phone" placeholder="Nomor telepon" value="<%= phone %>" required> 
+                <% if (error && error.phone) { %> 
+                    <p class="errors"><%= error.phone %></p>
+                <% } %>
+            </div>
+
+            <!-- Tombol submit dan reset -->
+            <div class="button-container">
+                <button type="submit">Submit</button> 
+                <button type="button" class="reset-button" onclick="resetForm()">Reset</button> 
+            </div>
+        </form>
+
+        <!-- Jika data berhasil dikirim, tampilkan pesan sukses -->
+        <% if (success) { %>
+            <script>
+                alert("Data berhasil dikirim!"); <!-- Pesan alert saat data berhasil dikirim -->
+            </script>
+            <br>
+            <p class="success">Data Anda berhasil disimpan!</p> 
+            <div class="info"> 
+                <h2>Detail Informasi:</h2>
+                <p>Nama         : <%= username %></p>
+                <p>Email        : <%= email %></p>
+                <p>Nomor Telepon: <%= phone %></p>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        function resetForm() {
+            // Mengosongkan semua input dalam formulir
+            document.getElementById('myForm').reset();
+            // Mengosongkan nilai input setelah reset
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            // Mengarahkan ulang ke halaman awal
+            window.location.href = '/'; 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+//  Nama        : Clara Zita Nabilla
+//  NIM         : 24060122130057
+//  Nama File   : tbo.ejs
+//  Deskripsi   : Berisi kode untuk pengecekan input email dan nomor telepon
+
+// VALIDASI ALAMAT EMAIL
+<% 
+function validateEmail(email) {
+  var regex = /^(?!.*\.\.)(?!.*\.-)(?!.*-\.)(?!^\.)(?!^-)(?!.*\+\+)([a-zA-Z0-9._%+-]+[a-zA-Z0-9])(?<!\.)@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
+// Contoh Berbagai Macam Input Email
+var emailList = [
+  // Email Valid
+  "clara@gmail.com",              // VALID (format email standar dengan domain umum)
+  "clara14@gmail.com",            // VALID (format email nama pengguna dengan angka)
+  "clara_2@gmail.com",            // VALID (format email dengan underscore di bagian user)
+  "clara@undip.co.id",            // VALID (email dengan domain tingkat kedua .co.id)
+  "clara.zt@gmail.com",           // VALID (nama pengguna dengan tanda titik, format benar)
+  "123clara@gmail.com",           // VALID (angka di awal nama pengguna diperbolehkan)
+  "clara+123@gmail.com",          // VALID (tanda plus di nama pengguna diperbolehkan)
+  "clara@students.undip",         // VALID (domain level tinggi dengan lebih dari 3 karakter diperbolehkan)
+  "clara@mail.subdomain.com",     // VALID (email dengan subdomain diperbolehkan)
+  "clara@yahoo.io",              // VALID (domain dengan TLD pendek .io)
+  "clara@outlook.travel",          // VALID (domain dengan TLD khusus .travel)
+  "clara@icloud123.com",          // VALID (domain dengan angka di dalamnya)
+  "clara@123mail.com",            // VALID (domain dapat diawali dan diakhiri dengan huruf atau angka)
+
+  // Email Tidak Valid
+  "clara.-@gmail.com",            // TIDAK VALID (nama pengguna tidak boleh memiliki kombinasi .-)
+  "clara#@yahoo.co.in",           // TIDAK VALID (karakter `#` tidak diperbolehkan di nama pengguna)
+  "clara@yahoocom",               // TIDAK VALID (tidak ada titik setelah domain)
+  "clara@.com",                   // TIDAK VALID (nama domain tidak boleh dimulai dengan titik)
+  "clara@com",                    // TIDAK VALID (tidak ada titik setelah domain)
+  "clara.com",                    // TIDAK VALID (tidak ada simbol @)
+  "@gmail.com",                   // TIDAK VALID (bagian nama pengguna kosong)
+  "clara$zita@gmail.com",         // TIDAK VALID (nama pengguna tidak boleh memiliki simbol $)
+  ".clara@gmail.com",             // TIDAK VALID (nama pengguna tidak boleh diawali dengan titik)
+  "clara.@gmail.com",             // TIDAK VALID (nama pengguna tidak boleh diakhiri dengan titik)
+  "clara..ztn@gmail.com",          // TIDAK VALID (dua titik berturut-turut di nama pengguna tidak diperbolehkan)
+  "clara@mail..com",            // TIDAK VALID (dua titik berturut-turut di domain tidak diperbolehkan)
+  "clara,email@gmail.com",        // TIDAK VALID (karakter `,` tidak diperbolehkan di nama pengguna)
+  "clara@email;com",              // TIDAK VALID (karakter `;` tidak diperbolehkan di domain)
+  "clara++test@gmail.com",        // TIDAK VALID (dua tanda plus berturut-turut tidak diperbolehkan)
+  "clara@email@gmail.com",       // TIDAK VALID (dua simbol @ tidak diperbolehkan)
+  "clara-@gmail.com",             // TIDAK VALID (nama pengguna tidak boleh diakhiri dengan tanda minus)
+  "clara@gmail!com"               // TIDAK VALID (karakter `!` tidak diperbolehkan di domain)
+];
+
+emailList.forEach(function(email) {
+  if (validateEmail(email)) {
+    %>
+    <%= email.padEnd(25) %> EMAIL VALID  <%
+  } else { 
+    %>
+    <%= email.padEnd(25) %> EMAIL TIDAK VALID <%
+  }
+});
+%>
+
+// VALIDASI FORMAT NOMOR TELEPON
+<% 
+function validatePhoneNumber(phoneNumber) {
+  var regex = /^(\+62|62|0)[\s-]?8[0-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
+  return regex.test(phoneNumber);
+}
+
+// Contoh Berbagai Macam Input Nomor Telepon
+var phoneNumbers = [
+  // Nomor Telepon Valid
+  "+62 812 3456 789",        // VALID (format dengan spasi sebagai pemisah)
+  "+62 812-3456-7890",       // VALID (menggunakan awalan kode negara +62 dengan tanda strip)
+  "+628123456789",           // VALID (menggunakan awalan kode negara +62 tanpa pemisah)
+  "628123456789",            // VALID (menggunakan awalan kode negara 62 tanpa tanda +)
+  "081234567890",            // VALID (menggunakan awalan 0)
+  "08234567890",             // VALID (menggunakan awalan 08)
+  "0812 3456 7890",          // VALID (menggunakan awalan 0 dengan spasi sebagai pemisah)
+  "0895 4149 72975",         // VALID (menggunakan awalan 0 dengan spasi sebagai pemisah)
+  "+62 812 3456 7890",       // VALID (menggunakan awalan kode negara +62 dengan spasi sebagai pemisah)
+  "0812-3456-7890",          // VALID (menggunakan awalan 0, format benar dengan tanda strip sebagai pemisah)
+  "62-819-5547-625",         // VALID (menggunakan awalan kode negara 62 tanpa tanda + dengan tanda strip sebagai pemisah)
+  
+  // Nomor Telepon Tidak Valid
+  "8123456789",              // VALID (dimulai langsung dengan angka 8 tanpa awalan)
+  "089 541 497 2975",        // TIDAK VALID (jumlah digit melebihi 15, dan format pemisahan tidak umum).
+  "+62 7123456789",          // TIDAK VALID (nomor Indonesia harus dimulai dengan 8 setelah kode negara)
+  "0812.3456.7890",          // TIDAK VALID (format salah, menggunakan titik sebagai pemisah)
+  "+62 (21) 123456",         // TIDAK VALID (kode area telepon rumah dan bukan nomor ponsel)
+  "+6281234567",             // TIDAK VALID (terlalu pendek, kurang dari 10 digit)
+  "62123456789",             // TIDAK VALID (prefix salah, seharusnya 62 diikuti oleh nomor yang dimulai dengan 8)
+  "08123456789123",          // TIDAK VALID (terlalu panjang, lebih dari 15 digit)
+  "+81234567890",            // TIDAK VALID (karena tanda plus seharusnya diikuti dengan kode negara seperti +62)
+  "0812/3456/7890",          // TIDAK VALID (menggunakan garis miring yang tidak sesuai)
+  "++628123456789"           // TIDAK VALID (tanda plus ganda tidak valid)
+];
+
+phoneNumbers.forEach(function(phoneNumber) {
+  if (validatePhoneNumber(phoneNumber)) {
+    %>
+    <%= phoneNumber.padEnd(25) %> NOMOR TELEPON VALID <% 
+  } else { 
+    %>
+    <%= phoneNumber.padEnd(25) %> NOMOR TELEPON TIDAK VALID <%
+  }
+});
+%>
